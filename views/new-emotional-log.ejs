@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Emotional Wellness</title>
+    <!-- BOOTSTRAP IMPORT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- FONT IMPORTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Antic&family=Julius+Sans+One&family=Poiret+One&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class = "container">
+        <div class = "header">
+            <h3>NEW EMOTIONAL WELLNESS LOG</h3>
+            <a href = "/wellness"><button class="btn btn-primary btn-sm">HOME</button></a>
+            <a href = "/wellness/emotionaltrend"><button class="btn btn-primary btn-sm">GO TO TREND</button></a>
+        </div>
+        <form class = "log-input" action = "/wellness/newemotional" method = "post">
+            <label for = "date">Date</label>
+            <input type = "date" name = "date" id = "date" />
+            <h4>Rate the accuracy statements below on a scale of 1 to 5.</h4>
+            <label for = "practicedMindfulness">I practiced mindfulness.</label>
+            <input type = "text" name = "practicedMindfulness" id = "practicedMindfulness" placeholder = "1 - 5" />
+            <label for = "practicedGratitude">I practiced gratitude.</label>
+            <input type = "text" name = "practicedGratitude" id = "practicedGratitude" placeholder = "1 - 5" />
+            <label for = "reflectedOnGoals">I reflected on my progress on goals I have set.</label>
+            <input type = "text" name = "reflectedOnGoals" id = "reflectedOnGoals" placeholder = "1 - 5" />
+            <input class="btn btn-primary btn-sm" type = "submit" value = "Add Log">
+        </form>
+    </div>
+    </body>
+    <img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
+    </html>
+    <style>
+        /* GENERAL */
+        html {
+        background: white;
+        }
+        body, .container {
+        background: white;
+        color: #263238;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        }
+        .header {
+            padding: 1%;
+            margin-bottom: 2%;
+            margin-top: 4%;
+            background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+        h3 {
+            margin: 2%;
+            margin-bottom: 4%;
+            font-family: 'Poiret One', cursive;
+        }
+        button, .btn, .btn-primary, .btn-sm {
+            background-color: white;
+            border-color: black;
+            color: black;
+        }
+        .btn-primary:hover {
+            background-color: #FFD023;
+            border-color: black;
+        }
+        a {
+            font-family: 'Poiret One', cursive;
+            color: #ECEFF1;
+            margin: 2%;
+            margin-bottom: 4%;
+        }
+        
+        /* FORM */
+        .log-input {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: 'Poiret One', cursive;
+        }
+        label, input {
+            margin: 1%;
+            text-align: center;
+        }
+        input {
+            padding: 2%;
+            font-size: small;
+        }
+        h4 {
+            margin: 2%;
+            margin-top: 4%;
+            margin-bottom: 2%;
+            padding-top: 4%;
+            border-top: 0.7px solid #263238;
+            font-family: 'Poiret One', cursive;
+            text-align: center;
+        }
+    img {
+        width: 100%;
+    }
+        
+    </style>

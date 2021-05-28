@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutritional Wellness Trend</title>
+    <!-- BOOTSTRAP IMPORT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- FONT IMPORTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Antic&family=Julius+Sans+One&family=Poiret+One&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class = "container">
+            <div class = "intro">
+        <div class = "header">
+            <h3>NUTRITIONAL WELLNESS TREND</h3>
+            <a href = "/wellness"><button class="btn btn-primary btn-sm">HOME</button></a>
+        </div>
+<!-- CREATE NEW LOG NAVIGATION BAR -->
+       <nav class = "navbar">
+        <div class = "row"> 
+            <a class = "nav-text" href = "/wellness/newemotional"><button class="btn btn-primary btn-sm">LOG EMOTIONAL</button></a>
+            <a class = "nav-text" href = "/wellness/newphysical"><button class="btn btn-primary btn-sm">LOG PHYSICAL</button></a>
+            <a class = "nav-text" href = "/wellness/newnutritional"><button class="btn btn-primary btn-sm">LOG NUTRITIONAL</button></a>
+            <a class = "nav-text" href = "/wellness/newsocial"><button class="btn btn-primary btn-sm">LOG SOCIAL</button></a>   
+        </div>
+    </nav>
+<!-- SEE TRENDS NAV BAR -->
+    <nav class = "navbar">
+        <div class = "row"> 
+            <a class = "nav-text" href = "/wellness/emotionaltrend"><button class="btn btn-primary btn-sm">EMOTIONAL TREND</button></a>
+            <a class = "nav-text" href = "/wellness/physicaltrend"><button class="btn btn-primary btn-sm">PHYSICAL TREND</button></a>
+            <a class = "nav-text" href = "/wellness/nutritionaltrend"><button class="btn btn-primary btn-sm">NUTRITIONAL TREND</button></a>
+            <a class = "nav-text" href = "/wellness/socialtrend"><button class="btn btn-primary btn-sm">SOCIAL TREND</button></a>   
+        </div>
+    </nav>
+</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Listened</th>
+                    <th>Ate Veggies</th>
+                    <th>Drank Water</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% wellnessData.forEach(data => { %>
+                    <tr>
+<!-- referenced https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat for date format -->
+                        <td><%= new Intl.DateTimeFormat("en" , {dateStyle:"short"}).format(data.date) %></td>
+                        <td><%= data.listenedToBody %></td>
+                        <td><%= data.ateVeggies %></td>
+                        <td><%= data.drankWater %></td>
+                        <td><a href = "/wellness/nutritionaltrend/<%= data.id %>/edit" ><button class="btn btn-primary btn-sm">EDIT</button></a></td>
+                        <td>
+                            <form action = "/wellness/nutritionaltrend/<%= data.id %>?_method=delete" method = "post">
+                                <input class="btn btn-primary btn-sm" type = "submit" value = "DELETE"/>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    </body>
+    <img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
+    </html>
+    <style>
+        /* GENERAL */
+        html {
+        background: white;;
+        }
+        body {
+        background: white;
+        color: #263238;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        }
+        .header {
+            display: inline-flex;
+            flex-direction: row;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid black;
+            margin-bottom: 2%;
+        }
+        h3 {
+            font-family: 'Poiret One', cursive;
+            text-align: center;
+            margin:0;
+        }
+    button, .btn, .btn-primary, .btn-sm {
+        background-color: white;
+        border-color: black;
+        color: black;
+    }
+    .btn-primary:hover {
+        background-color: #FFD023;
+        border-color: black;
+    }
+    a {
+        font-family: 'Poiret One', cursive;
+        color: #ECEFF1;
+        margin: 2%;
+    }
+
+    .intro {
+        background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
+        margin-top: 2%;
+    }
+/* NAV */
+.navbar {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 96%;
+        margin: 2%;
+        margin-bottom: 0;
+        margin-top: 0;
+        height: 80%;
+        margin-top: 0;
+        color: #ECEFF1;
+        padding: 1%;
+        padding-top: 0;
+    }
+    .nav-text {
+        font-size: 70%;
+        padding: 1%;
+        text-align: center;
+        margin: 0;
+    }
+    .row {
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        text-align: center;
+        margin: 0;
+    }
+    a {
+        font-family: 'Poiret One', cursive;
+        color: black;
+    }
+        /* TABLE */
+    table {
+    width: 100%;
+    margin-top: 4%;
+    }
+    th, td {
+        padding: 1%;
+        background: white;
+        border: 1px solid black;
+        font-family: 'Poiret One', cursive;
+        margin: 2%;
+        text-align: center;
+    }
+    img {
+        width: 100%;
+    }
+    </style>
