@@ -19,7 +19,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
 // ===== CONNECT TO MONGO/EXTERNAL MIDDLEWARE ===== //
-mongoose.connect('mongodb://localhost:27017/basiccrud', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+const mongoURI = process.env.LOCAL ? 'mongodb://localhost:27017/basiccrud' : process.env.MONGODBNAME
+mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 mongoose.connection.once('open', ()=> {
     console.log('connected to mongo')
 })
