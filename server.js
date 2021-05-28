@@ -18,12 +18,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || 'foo',
     resave: false,
     saveUninitialized: false
 }));
 // ===== CONNECT TO MONGO/EXTERNAL MIDDLEWARE ===== //
-var mongoURI = process.env.LOCAL ? 'mongodb://localhost:27017/basiccrud' : process.env.MONGODBNAME;
+var mongoURI = process.env.MONGODBNAME || 'mongodb://localhost:27017/basiccrud';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.once('open', function () {
     console.log('connected to mongo');
