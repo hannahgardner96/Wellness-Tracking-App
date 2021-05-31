@@ -9,6 +9,8 @@ import {SocialWellness} from "../models/social-wellness"
 
 // referenced https://mongoosejs.com/docs/subdocs.html and https://dev.to/oluseyeo/how-to-create-relationships-with-mongoose-and-node-js-11c8 and https://mongoosejs.com/docs/schematypes.html for below code
 const totalSchema = new mongoose.Schema({
+    username: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
     emotionalWellness: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "EmotionalWellness"

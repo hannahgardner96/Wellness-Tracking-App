@@ -3,8 +3,16 @@
 import * as express from 'express' // JS: const router = express.Router()
 import * as mongoose from 'mongoose' // JS: const mongoose = require("mongoose")
 import * as methodOverride from 'method-override' // JS: const methodOverride = require('method-override')
+import * as bcrypt from "bcrypt"
 
 export const router = express.Router()
+
+// type documentation for expess session https://github.com/DefinitelyTyped/DefinitelyTyped/blob/57e279fb29f06e2e6766118b585d0a3e940c45b3/types/express-session/index.d.ts#L203 used to declare additional properties that solved a type error when declaring req.session.user
+declare module 'express-session' {
+    interface SessionData { // 
+        user: any; // mongoose has bad typescript support: https://thecodebarbarian.com/working-with-mongoose-in-typescript.html this solves the typescript error for req.session.user
+    }
+}
 
 // ========== //
 router.use(methodOverride('_method'))
@@ -18,6 +26,56 @@ import {TotalWellness} from "../models/total-wellness"
 import { resolveSoa } from 'dns'
 
 // ===== ROUTES ===== // 
+// login
+router.get("/login", (req, res) => {
+    res.render("login.ejs")
+})
+
+// login next
+router.post("/login", (req, res) => {
+    TotalWellness.find({username: req.body.username}, (error, user) => {
+        if (error) {
+            res.send(error)
+        } else if (user.length === 0) { // want to check that find returns an array with a single element, not an empty array
+            res.render("login-incorrect-username.ejs")
+        } else  if (!bcrypt.compareSync(req.body.password, user[0].password)) { //find will always return an array so we want to find at [0] bc it is a singleton array
+            res.render("login-incorrect-password.ejs")
+        } else {
+            req.session.user = user[0] // req.session.user attaches the variable user to the session information, express stores that for you
+            res.redirect("/wellness")
+        }
+    })
+})
+
+// create account 
+router.get("/createaccount", (req, res) => {
+    res.render("create-account.ejs")
+})
+
+// create account post 
+router.post("/createaccount", (req, res) => {
+    TotalWellness.find({username: req.body.username}, (error, user) => {
+        if (error) {
+            res.send(error)
+        } else if (user.length === 0) {
+            const password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
+            req.body.password = password
+            TotalWellness.create(req.body, (error, newUser) => {
+                if (error) {
+                    res.send(error)
+                } else {
+                    req.session.user = newUser // this assigns the "newUser" to a session
+                    console.log(newUser)
+                    res.redirect("/login")
+                }
+            })
+        } else if (user) {
+            res.render("create-account-username-exists.ejs")
+        } 
+    })
+})
+
+
 // home
 router.get("/wellness", (req, res) => {
     TotalWellness.find({}, (error, wellness) => {
@@ -133,7 +191,7 @@ router.post("/wellness/newsocial", (req, res) => {
 
 // view emotional log trend
 router.get("/wellness/emotionaltrend", (req, res) => {
-    EmotionalWellness.find({}, (error, wellnessData) => {
+    TotalWellness.find({username: req.session.user.username}, (error, wellnessData) => {
         if (error) {
             res.render(error)
         } else {

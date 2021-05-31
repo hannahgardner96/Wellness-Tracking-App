@@ -1,11 +1,13 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.TotalWellness = void 0;
 // consulted someone with experience for TS formatting
-var mongoose = require("mongoose"); // JS: const mongoose = require("mongoose")
+const mongoose = require("mongoose"); // JS: const mongoose = require("mongoose")
 // need one place to reference all schemas in index bc cannot .find and pass information from multiple schemas to one ejs file 
 // referenced https://mongoosejs.com/docs/subdocs.html and https://dev.to/oluseyeo/how-to-create-relationships-with-mongoose-and-node-js-11c8 and https://mongoosejs.com/docs/schematypes.html for below code
-var totalSchema = new mongoose.Schema({
+const totalSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     emotionalWellness: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "EmotionalWellness"
