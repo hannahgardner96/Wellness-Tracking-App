@@ -10,3 +10,4 @@ const nutritionalSchema = new mongoose.Schema({
     drankWater: { type: Number, min: 0, max: 5 },
 });
 exports.NutritionalWellness = mongoose.model("NutritionalWellness", nutritionalSchema);
+//# sourceMappingURL=nutritional-wellness.js.map

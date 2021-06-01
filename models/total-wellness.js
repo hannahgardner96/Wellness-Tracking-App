@@ -8,21 +8,22 @@ const mongoose = require("mongoose"); // JS: const mongoose = require("mongoose"
 const totalSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    emotionalWellness: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "EmotionalWellness"
-    },
-    physicalWellness: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "PhysicalWellness"
-    },
-    nutritionalWellness: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "NutritionalWellness"
-    },
-    socialWellness: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "SocialWellness"
-    }
+    emotionalWellness: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "EmotionalWellness"
+        }],
+    physicalWellness: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "PhysicalWellness"
+        }],
+    nutritionalWellness: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "NutritionalWellness"
+        }],
+    socialWellness: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "SocialWellness"
+        }]
 });
 exports.TotalWellness = mongoose.model("TotalWellness", totalSchema);
+//# sourceMappingURL=total-wellness.js.map

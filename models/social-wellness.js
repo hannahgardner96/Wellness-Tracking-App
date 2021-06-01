@@ -10,3 +10,4 @@ const socialSchema = new mongoose.Schema({
     madeTimeForMyself: { type: Number, min: 0, max: 5 },
 });
 exports.SocialWellness = mongoose.model("SocialWellness", socialSchema);
+//# sourceMappingURL=social-wellness.js.map

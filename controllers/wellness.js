@@ -15,6 +15,15 @@ const nutritional_wellness_1 = require("../models/nutritional-wellness");
 const physical_wellness_1 = require("../models/physical-wellness");
 const social_wellness_1 = require("../models/social-wellness");
 const total_wellness_1 = require("../models/total-wellness");
+// ===== MIDDLEWARE ===== //
+const protectLogin = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    }
+    else {
+        res.redirect("/login");
+    }
+};
 // ===== ROUTES ===== // 
 // login
 exports.router.get("/login", (req, res) => {
@@ -68,7 +77,7 @@ exports.router.post("/createaccount", (req, res) => {
     });
 });
 // home
-exports.router.get("/wellness", (req, res) => {
+exports.router.get("/wellness", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.find({}, (error, wellness) => {
         if (error) {
             res.send(error);
@@ -81,7 +90,7 @@ exports.router.get("/wellness", (req, res) => {
     });
 });
 // new emotional log
-exports.router.get("/wellness/newemotional", (req, res) => {
+exports.router.get("/wellness/newemotional", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.find({}, (error, wellness) => {
         if (error) {
             res.send(error);
@@ -94,19 +103,22 @@ exports.router.get("/wellness/newemotional", (req, res) => {
     });
 });
 // create
-exports.router.post("/wellness/newemotional", (req, res) => {
-    emotional_wellness_1.EmotionalWellness.create(req.body, (error, log) => {
+exports.router.post("/wellness/newemotional", protectLogin, (req, res) => {
+    emotional_wellness_1.EmotionalWellness.create(req.body, (error, newLog) => {
         if (error) {
             res.send(error);
         }
         else {
-            console.log(log);
-            res.redirect("/wellness");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellness) => {
+                totalWellness.emotionalWellness.push(newLog); // accesses the emotional wellness key of the totalWellness and pushes the newLog (the req.body from the form)
+                totalWellness.save(); // saves the totalWellness document
+                res.redirect("/wellness/emotionaltrend");
+            });
         }
     });
 });
 // new physical log
-exports.router.get("/wellness/newphysical", (req, res) => {
+exports.router.get("/wellness/newphysical", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.find({}, (error, wellness) => {
         if (error) {
             res.send(error);
@@ -119,19 +131,22 @@ exports.router.get("/wellness/newphysical", (req, res) => {
     });
 });
 // create
-exports.router.post("/wellness/newphysical", (req, res) => {
-    physical_wellness_1.PhysicalWellness.create(req.body, (error, log) => {
+exports.router.post("/wellness/newphysical", protectLogin, (req, res) => {
+    physical_wellness_1.PhysicalWellness.create(req.body, (error, newLog) => {
         if (error) {
             res.send(error);
         }
         else {
-            console.log(log);
-            res.redirect("/wellness");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellness) => {
+                totalWellness.physicalWellness.push(newLog); // accesses the emotional wellness key of the totalWellness and pushes the newLog (the req.body from the form)
+                totalWellness.save(); // saves the totalWellness document
+                res.redirect("/wellness/physicaltrend");
+            });
         }
     });
 });
 // new nutritional log
-exports.router.get("/wellness/newnutritional", (req, res) => {
+exports.router.get("/wellness/newnutritional", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.find({}, (error, wellness) => {
         if (error) {
             res.send(error);
@@ -144,19 +159,23 @@ exports.router.get("/wellness/newnutritional", (req, res) => {
     });
 });
 // create
-exports.router.post("/wellness/newnutritional", (req, res) => {
-    nutritional_wellness_1.NutritionalWellness.create(req.body, (error, log) => {
+exports.router.post("/wellness/newnutritional", protectLogin, (req, res) => {
+    nutritional_wellness_1.NutritionalWellness.create(req.body, (error, newLog) => {
         if (error) {
             res.send(error);
         }
         else {
-            console.log(log);
-            res.redirect("/wellness");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellness) => {
+                totalWellness.nutritionalWellness.push(newLog); // accesses the emotional wellness key of the totalWellness and pushes the newLog (the req.body from the form)
+                totalWellness.save(); // saves the totalWellness document
+                console.log(totalWellness);
+                res.redirect("/wellness/nutritionaltrend");
+            });
         }
     });
 });
 // new social log
-exports.router.get("/wellness/newsocial", (req, res) => {
+exports.router.get("/wellness/newsocial", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.find({}, (error, wellness) => {
         if (error) {
             res.send(error);
@@ -169,71 +188,75 @@ exports.router.get("/wellness/newsocial", (req, res) => {
     });
 });
 // create
-exports.router.post("/wellness/newsocial", (req, res) => {
-    social_wellness_1.SocialWellness.create(req.body, (error, log) => {
+exports.router.post("/wellness/newsocial", protectLogin, (req, res) => {
+    social_wellness_1.SocialWellness.create(req.body, (error, newLog) => {
         if (error) {
             res.send(error);
         }
         else {
-            console.log(log);
-            res.redirect("/wellness");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellness) => {
+                totalWellness.socialWellness.push(newLog); // accesses the emotional wellness key of the totalWellness and pushes the newLog (the req.body from the form)
+                totalWellness.save(); // saves the totalWellness document
+                console.log(totalWellness);
+                res.redirect("/wellness/socialtrend");
+            });
         }
     });
 });
 // view emotional log trend
-exports.router.get("/wellness/emotionaltrend", (req, res) => {
-    total_wellness_1.TotalWellness.find({ username: req.session.user.username }, (error, wellnessData) => {
+exports.router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
             res.render(error);
         }
         else {
             res.render("view-emotional-trend.ejs", {
-                wellnessData: wellnessData
+                wellnessData: wellnessData.emotionalWellness
             });
         }
     });
 });
 // view physical log trend
-exports.router.get("/wellness/physicaltrend", (req, res) => {
-    physical_wellness_1.PhysicalWellness.find({}, (error, wellnessData) => {
+exports.router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellnessData) => {
         if (error) {
             res.render(error);
         }
         else {
             res.render("view-physical-trend.ejs", {
-                wellnessData: wellnessData
+                wellnessData: totalWellnessData.physicalWellness
             });
         }
     });
 });
 // view nutritional log trend
-exports.router.get("/wellness/nutritionaltrend", (req, res) => {
-    nutritional_wellness_1.NutritionalWellness.find({}, (error, wellnessData) => {
+exports.router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
             res.render(error);
         }
         else {
             res.render("view-nutritional-trend.ejs", {
-                wellnessData: wellnessData
+                wellnessData: wellnessData.nutritionalWellness
             });
         }
     });
 });
 // view social log trend
-exports.router.get("/wellness/socialtrend", (req, res) => {
-    social_wellness_1.SocialWellness.find({}, (error, wellnessData) => {
+exports.router.get("/wellness/socialtrend", protectLogin, (req, res) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
             res.render(error);
         }
         else {
             res.render("view-social-trend.ejs", {
-                wellnessData: wellnessData
+                wellnessData: wellnessData.socialWellness
             });
         }
     });
 });
 // edit emotional wellness log
-exports.router.get("/wellness/emotionaltrend/:id/edit", (req, res) => {
+exports.router.get("/wellness/emotionaltrend/:id/edit", protectLogin, (req, res) => {
     emotional_wellness_1.EmotionalWellness.findById(req.params.id, null, null, (error, data) => {
         if (error) {
             res.send(error);
@@ -246,13 +269,13 @@ exports.router.get("/wellness/emotionaltrend/:id/edit", (req, res) => {
     });
 });
 // update
-exports.router.put("/wellness/emotionaltrend/:id", (req, res) => {
+exports.router.put("/wellness/emotionaltrend/:id", protectLogin, (req, res) => {
     emotional_wellness_1.EmotionalWellness.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, log) => {
         res.redirect("/wellness/emotionaltrend");
     });
 });
 // edit physical wellness log
-exports.router.get("/wellness/physicaltrend/:id/edit", (req, res) => {
+exports.router.get("/wellness/physicaltrend/:id/edit", protectLogin, (req, res) => {
     physical_wellness_1.PhysicalWellness.findById(req.params.id, null, null, (error, data) => {
         if (error) {
             res.send(error);
@@ -265,13 +288,13 @@ exports.router.get("/wellness/physicaltrend/:id/edit", (req, res) => {
     });
 });
 // update
-exports.router.put("/wellness/physicaltrend/:id", (req, res) => {
+exports.router.put("/wellness/physicaltrend/:id", protectLogin, (req, res) => {
     physical_wellness_1.PhysicalWellness.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, log) => {
         res.redirect("/wellness/physicaltrend");
     });
 });
 // edit nutritional wellness log
-exports.router.get("/wellness/nutritionaltrend/:id/edit", (req, res) => {
+exports.router.get("/wellness/nutritionaltrend/:id/edit", protectLogin, (req, res) => {
     nutritional_wellness_1.NutritionalWellness.findById(req.params.id, null, null, (error, data) => {
         if (error) {
             res.send(error);
@@ -284,13 +307,13 @@ exports.router.get("/wellness/nutritionaltrend/:id/edit", (req, res) => {
     });
 });
 // update
-exports.router.put("/wellness/nutritionaltrend/:id", (req, res) => {
+exports.router.put("/wellness/nutritionaltrend/:id", protectLogin, (req, res) => {
     nutritional_wellness_1.NutritionalWellness.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, log) => {
         res.redirect("/wellness/nutritionaltrend");
     });
 });
 // edit social wellness log
-exports.router.get("/wellness/socialtrend/:id/edit", (req, res) => {
+exports.router.get("/wellness/socialtrend/:id/edit", protectLogin, (req, res) => {
     social_wellness_1.SocialWellness.findById(req.params.id, null, null, (error, data) => {
         if (error) {
             res.send(error);
@@ -303,13 +326,13 @@ exports.router.get("/wellness/socialtrend/:id/edit", (req, res) => {
     });
 });
 // update
-exports.router.put("/wellness/socialtrend/:id", (req, res) => {
+exports.router.put("/wellness/socialtrend/:id", protectLogin, (req, res) => {
     social_wellness_1.SocialWellness.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, log) => {
         res.redirect("/wellness/socialtrend");
     });
 });
 // delete emotional log
-exports.router.delete("/wellness/emotionaltrend/:id", (req, res) => {
+exports.router.delete("/wellness/emotionaltrend/:id", protectLogin, (req, res) => {
     emotional_wellness_1.EmotionalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => {
         if (error) {
             res.send(error);
@@ -320,7 +343,7 @@ exports.router.delete("/wellness/emotionaltrend/:id", (req, res) => {
     });
 });
 // delete physical log
-exports.router.delete("/wellness/physicaltrend/:id", (req, res) => {
+exports.router.delete("/wellness/physicaltrend/:id", protectLogin, (req, res) => {
     physical_wellness_1.PhysicalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => {
         if (error) {
             res.send(error);
@@ -331,7 +354,7 @@ exports.router.delete("/wellness/physicaltrend/:id", (req, res) => {
     });
 });
 // delete nutritional log
-exports.router.delete("/wellness/nutritionaltrend/:id", (req, res) => {
+exports.router.delete("/wellness/nutritionaltrend/:id", protectLogin, (req, res) => {
     nutritional_wellness_1.NutritionalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => {
         if (error) {
             res.send(error);
@@ -342,7 +365,7 @@ exports.router.delete("/wellness/nutritionaltrend/:id", (req, res) => {
     });
 });
 // delete social log
-exports.router.delete("/wellness/socialtrend/:id", (req, res) => {
+exports.router.delete("/wellness/socialtrend/:id", protectLogin, (req, res) => {
     social_wellness_1.SocialWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => {
         if (error) {
             res.send(error);
@@ -352,3 +375,4 @@ exports.router.delete("/wellness/socialtrend/:id", (req, res) => {
         }
     });
 });
+//# sourceMappingURL=wellness.js.map

@@ -11,22 +11,22 @@ import {SocialWellness} from "../models/social-wellness"
 const totalSchema = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    emotionalWellness: {
+    emotionalWellness: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: "EmotionalWellness"
-    },
-    physicalWellness: {
+    }],
+    physicalWellness: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: "PhysicalWellness"
-    },
-    nutritionalWellness: {
+    }],
+    nutritionalWellness: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: "NutritionalWellness"
-    },
-    socialWellness: {
+    }],
+    socialWellness: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: "SocialWellness"
-    }
+    }]
 })
             
 

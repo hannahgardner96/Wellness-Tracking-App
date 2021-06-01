@@ -11,6 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true
+    "noImplicitAny": false,
+    "sourceMap": true
   }
 }

@@ -35,3 +35,4 @@ app.use(wellness_1.router);
 app.listen(port, () => {
     console.log("listening on port", port);
 });
+//# sourceMappingURL=server.js.map

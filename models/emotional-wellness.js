@@ -10,3 +10,4 @@ const emotionalSchema = new mongoose.Schema({
     reflectedOnGoals: { type: Number, min: 0, max: 5 },
 });
 exports.EmotionalWellness = mongoose.model("EmotionalWellness", emotionalSchema);
+//# sourceMappingURL=emotional-wellness.js.map

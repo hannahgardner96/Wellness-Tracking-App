@@ -10,3 +10,4 @@ const physicalSchema = new mongoose.Schema({
     restedBody: { type: Number, min: 0, max: 5 },
 });
 exports.PhysicalWellness = mongoose.model("PhysicalWellness", physicalSchema);
+//# sourceMappingURL=physical-wellness.js.map
