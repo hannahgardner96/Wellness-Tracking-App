@@ -215,12 +215,17 @@ router.post("/wellness/newsocial", protectLogin, (req, res) => {
 
 // view emotional log trend
 router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
-        TotalWellness.findOne({username: req.session.user.username}, (error, wellnessData) => {
+    TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
             res.render(error)
-        } else {
-            res.render("view-emotional-trend.ejs", {
-                wellnessData: wellnessData.emotionalWellness
+        } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.emotionalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
+                return EmotionalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            })
+            Promise.all(logObjects).then((objects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
+                res.render("view-emotional-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                })
             })
         }
     })
@@ -228,26 +233,35 @@ router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
 
 // view physical log trend
 router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
-    TotalWellness.findOne({username: req.session.user.username}, (error, totalWellnessData) => {
+    TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
             res.render(error)
-        } else {
-            res.render("view-physical-trend.ejs", {
-                wellnessData: totalWellnessData.physicalWellness
+        } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.physicalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
+                return PhysicalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            })
+            Promise.all(logObjects).then((objects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
+                res.render("view-physical-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                })
             })
         }
     })
-    
 })
 
 // view nutritional log trend
 router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
-    TotalWellness.findOne({username: req.session.user.username}, (error, wellnessData) => {
+    TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
             res.render(error)
-        } else {
-            res.render("view-nutritional-trend.ejs", {
-                wellnessData: wellnessData.nutritionalWellness
+        } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.nutritionalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
+                return NutritionalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            })
+            Promise.all(logObjects).then((objects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
+                res.render("view-nutritional-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                })
             })
         }
     })
@@ -255,12 +269,17 @@ router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
 
 // view social log trend
 router.get("/wellness/socialtrend", protectLogin, (req, res) => {
-    TotalWellness.findOne({username: req.session.user.username}, (error, wellnessData) => {
+    TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
             res.render(error)
-        } else {
-            res.render("view-social-trend.ejs", {
-                wellnessData: wellnessData.socialWellness
+        } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.socialWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
+                return SocialWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            })
+            Promise.all(logObjects).then((objects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
+                res.render("view-social-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                })
             })
         }
     })
@@ -354,40 +373,64 @@ router.delete("/wellness/emotionaltrend/:id", protectLogin, (req, res) => {
         if (error) {
             res.send(error)
         } else {
-            res.redirect("/wellness/emotionaltrend")
+            TotalWellness.findOne({username: req.session.user.username}, (error, wellness) => { // must delete the log from both documents
+                let index = wellness.emotionalWellness.indexOf(req.params.id)
+                wellness.emotionalWellness.splice(index, 1)
+                wellness.save()
+                res.redirect("/wellness/emotionaltrend") // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            })
+            
         }
     })
 })
 
 // delete physical log
 router.delete("/wellness/physicaltrend/:id", protectLogin, (req, res) => {
-    PhysicalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second
+    PhysicalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second, consulted someone with experience
         if (error) {
             res.send(error)
         } else {
-            res.redirect("/wellness/physicaltrend")
+            TotalWellness.findOne({username: req.session.user.username}, (error, wellness) => { // must delete the log from both documents
+                let index = wellness.physicalWellness.indexOf(req.params.id)
+                wellness.physicalWellness.splice(index, 1)
+                wellness.save()
+                res.redirect("/wellness/physicaltrend") // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            })
+            
         }
     })
 })
 
 // delete nutritional log
 router.delete("/wellness/nutritionaltrend/:id", protectLogin, (req, res) => {
-    NutritionalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second
+    NutritionalWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second, consulted someone with experience
         if (error) {
             res.send(error)
         } else {
-            res.redirect("/wellness/nutritionaltrend")
+            TotalWellness.findOne({username: req.session.user.username}, (error, wellness) => { // must delete the log from both documents
+                let index = wellness.nutritionalWellness.indexOf(req.params.id)
+                wellness.nutritionalWellness.splice(index, 1)
+                wellness.save()
+                res.redirect("/wellness/nutritionaltrend") // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            })
+            
         }
     })
 })
 
 // delete social log
 router.delete("/wellness/socialtrend/:id", protectLogin, (req, res) => {
-    SocialWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second
+    SocialWellness.findByIdAndRemove(req.params.id, null, (error, deleteSuccess) => { // adding null solved a type error produced by using the error parameter second when it wanted the option parameter second, consulted someone with experience
         if (error) {
             res.send(error)
         } else {
-            res.redirect("/wellness/socialtrend")
+            TotalWellness.findOne({username: req.session.user.username}, (error, wellness) => { // must delete the log from both documents
+                let index = wellness.socialWellness.indexOf(req.params.id)
+                wellness.socialWellness.splice(index, 1)
+                wellness.save()
+                res.redirect("/wellness/socialtrend") // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            })
+            
         }
     })
 })

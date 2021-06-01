@@ -209,22 +209,32 @@ exports.router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
         if (error) {
             res.render(error);
         }
-        else {
-            res.render("view-emotional-trend.ejs", {
-                wellnessData: wellnessData.emotionalWellness
+        else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.emotionalWellness.map(log => {
+                return emotional_wellness_1.EmotionalWellness.findById(log).exec(); // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            });
+            Promise.all(logObjects).then((objects) => {
+                res.render("view-emotional-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                });
             });
         }
     });
 });
 // view physical log trend
 exports.router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
-    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, totalWellnessData) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
             res.render(error);
         }
-        else {
-            res.render("view-physical-trend.ejs", {
-                wellnessData: totalWellnessData.physicalWellness
+        else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.physicalWellness.map(log => {
+                return physical_wellness_1.PhysicalWellness.findById(log).exec(); // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            });
+            Promise.all(logObjects).then((objects) => {
+                res.render("view-physical-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                });
             });
         }
     });
@@ -235,9 +245,14 @@ exports.router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
         if (error) {
             res.render(error);
         }
-        else {
-            res.render("view-nutritional-trend.ejs", {
-                wellnessData: wellnessData.nutritionalWellness
+        else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.nutritionalWellness.map(log => {
+                return nutritional_wellness_1.NutritionalWellness.findById(log).exec(); // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            });
+            Promise.all(logObjects).then((objects) => {
+                res.render("view-nutritional-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                });
             });
         }
     });
@@ -248,9 +263,14 @@ exports.router.get("/wellness/socialtrend", protectLogin, (req, res) => {
         if (error) {
             res.render(error);
         }
-        else {
-            res.render("view-social-trend.ejs", {
-                wellnessData: wellnessData.socialWellness
+        else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            const logObjects = wellnessData.socialWellness.map(log => {
+                return social_wellness_1.SocialWellness.findById(log).exec(); // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            });
+            Promise.all(logObjects).then((objects) => {
+                res.render("view-social-trend.ejs", {
+                    wellnessData: objects // objects is the resolved promise as specified in the .then() parameter
+                });
             });
         }
     });
@@ -338,7 +358,12 @@ exports.router.delete("/wellness/emotionaltrend/:id", protectLogin, (req, res) =
             res.send(error);
         }
         else {
-            res.redirect("/wellness/emotionaltrend");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellness) => {
+                let index = wellness.emotionalWellness.indexOf(req.params.id);
+                wellness.emotionalWellness.splice(index, 1);
+                wellness.save();
+                res.redirect("/wellness/emotionaltrend"); // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            });
         }
     });
 });
@@ -349,7 +374,12 @@ exports.router.delete("/wellness/physicaltrend/:id", protectLogin, (req, res) =>
             res.send(error);
         }
         else {
-            res.redirect("/wellness/physicaltrend");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellness) => {
+                let index = wellness.physicalWellness.indexOf(req.params.id);
+                wellness.physicalWellness.splice(index, 1);
+                wellness.save();
+                res.redirect("/wellness/physicaltrend"); // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            });
         }
     });
 });
@@ -360,7 +390,12 @@ exports.router.delete("/wellness/nutritionaltrend/:id", protectLogin, (req, res)
             res.send(error);
         }
         else {
-            res.redirect("/wellness/nutritionaltrend");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellness) => {
+                let index = wellness.nutritionalWellness.indexOf(req.params.id);
+                wellness.nutritionalWellness.splice(index, 1);
+                wellness.save();
+                res.redirect("/wellness/nutritionaltrend"); // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            });
         }
     });
 });
@@ -371,7 +406,12 @@ exports.router.delete("/wellness/socialtrend/:id", protectLogin, (req, res) => {
             res.send(error);
         }
         else {
-            res.redirect("/wellness/socialtrend");
+            total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellness) => {
+                let index = wellness.socialWellness.indexOf(req.params.id);
+                wellness.socialWellness.splice(index, 1);
+                wellness.save();
+                res.redirect("/wellness/socialtrend"); // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
+            });
         }
     });
 });
