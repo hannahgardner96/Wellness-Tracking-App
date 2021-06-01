@@ -56,6 +56,14 @@ router.post("/login", (req, res) => {
     })
 })
 
+// logout
+// referenced https://www.codota.com/code/javascript/functions/express/Request/logout
+router.post("/logout", protectLogin, (req, res) => {
+    req.session.user = null
+    console.log(req.session.user)
+    res.redirect("/login")
+})
+
 // create account 
 router.get("/createaccount", (req, res) => {
     res.render("create-account.ejs")
@@ -83,7 +91,6 @@ router.post("/createaccount", (req, res) => {
         } 
     })
 })
-
 
 // home
 router.get("/wellness", protectLogin, (req, res) => { // protectLogin is middleware writeen in server.ts and imported to this file to only allow next() if there is a user attached to the session
@@ -431,6 +438,17 @@ router.delete("/wellness/socialtrend/:id", protectLogin, (req, res) => {
                 res.redirect("/wellness/socialtrend") // this must go inside the curly braces otherwise it will try to redirect before deleting and produce an error
             })
             
+        }
+    })
+})
+
+// delete account route
+router.delete("/deleteaccount", protectLogin, (req, res) => {
+    TotalWellness.findByIdAndRemove(req.session.user._id, null, (error, deleteSuccess) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.redirect("/login")
         }
     })
 })

@@ -22,22 +22,25 @@
             <form action = "" method = "post">
                 <input type = "text" name = "username" id = "username" placeholder="Username" /> 
                 <input type = "password" name = "password" id = "password" placeholder="Password" /> 
-                <div class = "button-container">
-                    <input class="btn btn-primary btn-sm" type = "submit" value = "LOG IN" />
-                    <a href = "/createaccount"><button class = "btn btn-primary btn-sm">CREATE ACCOUNT</button></a>
-                </div>
+                <input class="btn btn-primary btn-sm" type = "submit" value = "LOG IN" />
             </form>
+            <a href = "/createaccount"><button class = "btn btn-primary btn-sm">CREATE ACCOUNT</button></a>
+            
     </div>
 </body>
 <img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
 </html>
 <style>
-    body {
+    .container {
         display: inline-flex;
         flex-direction: column;
         justify-content: center;
         font-family: 'Poiret One', cursive;
         margin: 2%;
+    }
+    h1 {
+        margin: 2%;
+        text-align: center;
     }
     form {
         display: inline-flex;
@@ -46,11 +49,8 @@
     }
     .btn-primary, input {
         margin: 2%;
-    }
-    .button-container {
-        display: inline-flex;
-        flex-direction: row;
-        justify-content: center;
+        width: 100%;
+        text-align: center;
     }
     img {
         width: 100%;

@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wellness Home</title>
-    <!-- BOOTSTRAP IMPORT -->
+    <!-- D3 IMPORT -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     
+    <!-- BOOTSTRAP IMPORT -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!-- FONT IMPORTS -->
@@ -20,6 +22,7 @@
 </head>
 <body>
     <div class = "container">
+        <%- include ("./partials/account-options.ejs") %>
         <div class = "intro">
             <h3>WELLNESS TRACKER</h3>
             <%- include ("./partials/full-nav.ejs") %>
@@ -80,7 +83,7 @@
     h3 {
         padding: 1%;
         margin-bottom: 2%;
-        margin-top: 4%;
+        margin-top: 2%;
         font-family: 'Poiret One', cursive;
         text-align: center;
         border-bottom: 1px solid black;
