@@ -389,21 +389,21 @@
     // Color scale: give me a specie name, I return a color
 
     colorMap2.map(([type, color]) => { 
-        const filteredData = _.sortBy(allData2, 'date').filter(({label}) => label === type) // this calls lodash to sort the array by date so that the line is drawn sequentially
-        const path = d3.path() // defines the d3 element "line" as a path
+        const filteredData2 = _.sortBy(allData2, 'date').filter(({label}) => label === type) // this calls lodash to sort the array by date so that the line is drawn sequentially
+        const path2 = d3.path() // defines the d3 element "line" as a path
         // first command in path has to be moveTo
-        const {date, value} = _.head(filteredData) // uses lodash method to pull out the first date and value which will be used to tell the line where to begin
-        path.moveTo(x(date), y(value)) // moveTo tells the line where to begin
+        const {date, value} = _.head(filteredData2) // uses lodash method to pull out the first date and value which will be used to tell the line where to begin
+        path2.moveTo(x2(date), y2(value)) // moveTo tells the line where to begin
 
         // from there we draw a bunch of lines using lineTo
-        _.tail(filteredData).forEach(({date, value}) => { // loops through each coordinate
-            path.lineTo(x(date), y(value)) // draws a line to each coordinate
+        _.tail(filteredData2).forEach(({date, value}) => { // loops through each coordinate
+            path2.lineTo(x2(date), y2(value)) // draws a line to each coordinate
         })
 
         // this appends the path element
         Svg2.append("path")
-           .attr("d", path.toString())
-           .attr("stroke", color2)
+           .attr("d", path2.toString())
+           .attr("stroke", color)
            .attr("fill-opacity", "0") // turns shapes into outlines 
            .attr("stroke-width", 2)
     })
