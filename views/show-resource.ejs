@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Resources</title>
+    <title>Resource</title>
 
     <!-- BOOTSTRAP IMPORT -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -24,77 +24,74 @@
             <h3>MY WELLNESS RESOURCES</h3>
         <a href = "/resource/new"><button class="btn btn-primary btn-sm" id = "new-resource">NEW RESOURCE</button></a>
         </div>
-        <div class = "resource-display" id = "resource-array">
-            <% resource.forEach(resource => { %>
-                <div class = "resource-display">
-                    <h4><a href = "/resource/<%= resource.id %>"><%= resource.title.toUpperCase() %></a></h4>
-                    <p>
-                        <%= resource.description %>
-                    </p>
-                    <!-- referenced https://wordpress.stackexchange.com/questions/288434/how-to-change-thumbnail-of-embedded-youtube-video for below code -->
-                    <div>
-                        <% const videoId = resource.src.substring(resource.src.indexOf("=") + 1) %>
-                        <iframe src="https://www.youtube.com/embed/<%= videoId %>" width="105" height="78" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
-                    </div>
-                </div>
-            <% }) %>
+        <div class = "video-container">
+            <h4><a href = "/resource/<%= resource.id %>"><%= resource.title.toUpperCase() %></a></h4>
+            <p>
+                <%= resource.description %>
+            </p>
+            <!-- referenced https://wordpress.stackexchange.com/questions/288434/how-to-change-thumbnail-of-embedded-youtube-video for below code -->
+            <div class = "video-display">
+                <% const videoId = resource.src.substring(resource.src.indexOf("=") + 1) %>
+                <iframe src="https://www.youtube.com/embed/<%= videoId %>" width="105" height="78" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+            </div>
+            <form action = "/resource/<%= id %>?_method=delete" method = "post">
+                <input class="btn btn-outline-primary"type = "submit" value = "DELETE"/>
+            </form>
+            <a href = "/resource/<%= id %>/edit"><button class="btn btn-outline-primary">EDIT</button></a>
+        </div>
         </div>
     </div>
 </body>
 </html>
-
 <style>
-    .container {
+    body {
         font-family: 'Poiret One', cursive;
         padding: 5%;
-
-    }
-    .intro {
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
     }
     a {
         color: black;
     }
-    h3 {
+    h4 {
         padding: 2%;
+        color: black;
+        margin: 1%;
+    }
+    nav {
+        padding: 2%;
+        background-color: black;
+        margin: 1%;
+    }
+    .btn-outline-primary {
+        border-color: #FFD023;
+        background-color: white;
+    }
+    p {
+        padding: 2%;
+        color: black;
+    }
+    .video-container {
+        background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
         background-color: white;
         color: black;
-        text-align: center;
-    }
-    #resource-array {
-        width: 50%;
-        margin-top: 1%;
-        padding-left: 0;
-        display: inline-flex;
-        flex-direction: row;
-        background-color: white;
-        flex-wrap: wrap;
-    }
-    .resource-display {
+        margin: 1%;
         padding: 2%;
-        margin: 2%;
-        height: 95%;
-        width: 90%;
+    }
+    .video-display {
+        padding: 2%;
+        width: 590px;
+        height: 315px;
         border: 2px solid #FFD023;
         display: flex;
         flex-direction: column;
-        justify-content:center;
+        justify-content:space-around;
         align-items: center;
-        background-color: white;
-        text-align: start;
-        align-self: center;
-    }
-    h4, p {
-        font-size: 1.5vmin;
-        text-decoration: underline;
-        align-self: center;
+        margin: 2%;
+        background-color: white ;
+        color: black;
     }
     iframe {
-        height: 80%;
-        width: 100%;
+        width: 560px;
+        height: 315px;
         padding: 0;
     }
 
@@ -108,9 +105,4 @@
         background-color: #FFD023;
         border-color: black;
     }
-    #new-resource {
-        align-self: center;
-        justify-self: center;
-    }
 </style>
-</body>

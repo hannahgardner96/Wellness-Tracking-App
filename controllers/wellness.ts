@@ -1,3 +1,8 @@
+// additional ideas
+// change input from text to drop down on 
+// responsiveness on phone
+// busy home page, ore description needed
+
 // ===== DEPENDENCIES ===== //
 // consulted someone with experience for TS formatting
 import * as express from 'express' // JS: const router = express.Router()
@@ -24,6 +29,7 @@ import {PhysicalWellness} from "../models/physical-wellness"
 import {SocialWellness} from "../models/social-wellness"
 import {TotalWellness} from "../models/total-wellness"
 import { resolveSoa } from 'dns'
+import {Resource} from "../models/resources"
 
 // ===== MIDDLEWARE ===== //
 const protectLogin = (req, res, next) => {
@@ -478,6 +484,76 @@ router.delete("/deleteaccount", protectLogin, (req, res) => {
             res.send(error)
         } else {
             res.redirect("/login")
+        }
+    })
+})
+
+// wellness resources section
+//index
+router.get("/resources", (req, res) => {
+    Resource.find({}, (error, resource) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.render("wellness-resources-index.ejs", {
+                resource: resource
+            })
+        }
+    })
+})
+// new
+router.get("/resource/new", (req, res) => {
+    res.render("new-resource.ejs")
+})
+// create
+router.post("/resource/new", (req, res) => {
+    Resource.create(req.body, (error, resource) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.redirect("/resources")
+        }
+    })
+})
+// show
+router.get("/resource/:id", (req, res) => {
+    Resource.findById(req.params.id, (error, resource) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.render("show-resource.ejs", {
+                resource: resource,
+                id: resource.id
+            })
+        }
+    })
+})
+
+// edit
+router.get("/resource/:id/edit", (req, res) => {
+    Resource.findById(req.params.id, (error, resource) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.render("edit-resource")
+        }
+    })
+})
+
+// update
+router.put("/resource/:id/edit", (req, res) => {
+    Resource.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, video) => {
+        res.redirect(`/resource/${req.params.id}`)
+    })
+})
+
+// delete 
+router.delete("/resource/:id", (req, res) => {
+    Resource.findByIdAndRemove(req.params.id, (error, deleted) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.redirect("/resources")
         }
     })
 })

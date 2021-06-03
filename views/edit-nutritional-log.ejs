@@ -21,7 +21,6 @@
         <%- include ("./partials/account-options.ejs") %>
         <div class = "header">
             <h3>EDIT NUTRITIONAL WELLNESS LOG</h3>
-            <a href = "/wellness"><button class="btn btn-primary btn-sm">HOME</button></a>
             <a href = "/wellness/nutritionaltrend"><button class="btn btn-primary btn-sm">GO TO TREND</button></a>
         </div>
         <form class = "log-input" action = "/wellness/nutritionaltrend/<%= data.id %>?_method=put" method = "post">
@@ -81,7 +80,6 @@
             font-family: 'Poiret One', cursive;
             color: #ECEFF1;
             margin: 2%;
-            margin-bottom: 4%;
         }
         
         /* FORM */
