@@ -85,13 +85,27 @@ exports.router.post("/createaccount", (req, res) => {
 });
 // home
 exports.router.get("/wellness", protectLogin, (req, res) => {
-    total_wellness_1.TotalWellness.find({}, (error, wellness) => {
+    total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
             res.send(error);
         }
-        else {
-            res.render("home.ejs", {
-                wellness: wellness
+        else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            console.log(wellnessData);
+            const emotionalLogObjects = wellnessData.emotionalWellness.map(log => {
+                return emotional_wellness_1.EmotionalWellness.findById(log).exec(); // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            });
+            const physicalLogObjects = wellnessData.physicalWellness.map(log => {
+                return physical_wellness_1.PhysicalWellness.findById(log).exec();
+            });
+            Promise.all(emotionalLogObjects).then((emotionalObjects) => {
+                Promise.all(physicalLogObjects).then((physicalObjects) => {
+                    console.log(emotionalObjects, physicalObjects);
+                    res.render("home.ejs", {
+                        physicalData: physicalObjects,
+                        emotionalData: emotionalObjects
+                        // objects is the resolved promise as specified in the .then() parameter
+                    });
+                });
             });
         }
     });
@@ -214,7 +228,7 @@ exports.router.post("/wellness/newsocial", protectLogin, (req, res) => {
 exports.router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
-            res.render(error);
+            res.send(error);
         }
         else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.emotionalWellness.map(log => {
@@ -232,7 +246,7 @@ exports.router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
 exports.router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
-            res.render(error);
+            res.send(error);
         }
         else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.physicalWellness.map(log => {
@@ -250,7 +264,7 @@ exports.router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
 exports.router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
-            res.render(error);
+            res.send(error);
         }
         else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.nutritionalWellness.map(log => {
@@ -268,7 +282,7 @@ exports.router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
 exports.router.get("/wellness/socialtrend", protectLogin, (req, res) => {
     total_wellness_1.TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => {
         if (error) {
-            res.render(error);
+            res.send(error);
         }
         else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.socialWellness.map(log => {

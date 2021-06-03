@@ -94,12 +94,26 @@ router.post("/createaccount", (req, res) => {
 
 // home
 router.get("/wellness", protectLogin, (req, res) => { // protectLogin is middleware writeen in server.ts and imported to this file to only allow next() if there is a user attached to the session
-    TotalWellness.find({}, (error, wellness) => {
+    TotalWellness.findOne({ username: req.session.user.username }, (error,wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
             res.send(error)
-        } else {
-            res.render("home.ejs", {
-                wellness: wellness
+        } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
+            console.log(wellnessData)
+            const emotionalLogObjects = wellnessData.emotionalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
+                return EmotionalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
+            })
+            const physicalLogObjects = wellnessData.physicalWellness.map(log => {
+                return PhysicalWellness.findById(log).exec()
+            })
+            Promise.all(emotionalLogObjects).then((emotionalObjects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
+                Promise.all(physicalLogObjects).then((physicalObjects) => {
+                    console.log(emotionalObjects, physicalObjects)
+                    res.render("home.ejs", {
+                        physicalData: physicalObjects,
+                        emotionalData: emotionalObjects
+                        // objects is the resolved promise as specified in the .then() parameter
+                    })
+                })
             })
         }
     })
@@ -224,7 +238,7 @@ router.post("/wellness/newsocial", protectLogin, (req, res) => {
 router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
     TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
-            res.render(error)
+            res.send(error)
         } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.emotionalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
                 return EmotionalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
@@ -242,7 +256,7 @@ router.get("/wellness/emotionaltrend", protectLogin, (req, res) => {
 router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
     TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
-            res.render(error)
+            res.send(error)
         } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.physicalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
                 return PhysicalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
@@ -260,7 +274,7 @@ router.get("/wellness/physicaltrend", protectLogin, (req, res) => {
 router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
     TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
-            res.render(error)
+            res.send(error)
         } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.nutritionalWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
                 return NutritionalWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
@@ -278,7 +292,7 @@ router.get("/wellness/nutritionaltrend", protectLogin, (req, res) => {
 router.get("/wellness/socialtrend", protectLogin, (req, res) => {
     TotalWellness.findOne({ username: req.session.user.username }, (error, wellnessData) => { // finds the TotalWellness document associated with the username
         if (error) {
-            res.render(error)
+            res.send(error)
         } else { // have to create async db searches so that the page does not render until data has been filtered from mongoose
             const logObjects = wellnessData.socialWellness.map(log => { // creates an array of promises which in mongoose are ".exec()" functions
                 return SocialWellness.findById(log).exec() // the promise queryies the EmotionalWellness documents, waits to find a matching one, and returns the object document with that ID
