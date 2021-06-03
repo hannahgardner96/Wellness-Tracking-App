@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Wellness Trend</title>
+    <!-- D3 IMPORT -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <!-- from https://www.d3-graph-gallery.com/graph/custom_theme.html -->
+    
+    <!-- BOOTSTRAP IMPORT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <!-- FONT IMPORTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Antic&family=Julius+Sans+One&family=Poiret+One&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class = "container">
+        <%- include ("./partials/account-options.ejs") %>
+        <div class = "intro">
+            <div class = "header">
+                <h3>SOCIAL WELLNESS TREND</h3>
+                <a href = "/wellness"><button class="btn btn-primary btn-sm">HOME</button></a>
+            </div>
+            <%- include ("./partials/full-nav.ejs") %>
+        </div>
+        <div class = "switch-display">
+            <button class="btn btn-primary btn-sm" id = "view-table">VIEW TABLE</button>
+            <button class="btn btn-primary btn-sm" id = "view-graph">VIEW GRAPH</button>
+        </div>
+        <h4>WELLNESS TREND</h4>
+        <div id = "table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Connection</th>
+                        <th>Sharing</th>
+                        <th>Time for Myself</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% wellnessData.forEach(data => { %>
+                        <tr>
+    <!-- referenced https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat for date format -->
+                            <td><%= new Intl.DateTimeFormat("en" , {dateStyle:"short"}).format(data.date) %></td>
+                            <td><%= data.connectedWithSomeone %></td>
+                            <td><%= data.sharedFeelings %></td>
+                            <td><%= data.madeTimeForMyself %></td>
+                            <td><a href = "/wellness/socialtrend/<%= data.id %>/edit" ><button class="btn btn-primary btn-sm">EDIT</button></a></td>
+                            <td>
+                                <form action = "/wellness/socialtrend/<%= data.id %>?_method=delete" method = "post">
+                                    <input class="btn btn-primary btn-sm" type = "submit" value = "DELETE"/>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div id = "graph">
+            <div class = "legend">
+                <p class = "group1">Connected with Someone</p>
+                <p class = "group2">Shared Feelings</p>
+                <p class = "group3">Time for Self</p>
+            </div>
+        </div>
+    </div>
+    </body>
+    <img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
+    </html>
+    <style>
+        /* GENERAL */
+        html {
+        background: white;;
+        }
+        body {
+        background: white;
+        color: #263238;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        }
+        .header {
+            display: inline-flex;
+            flex-direction: row;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid black;
+            margin-bottom: 2%;
+        }
+        h3, h4 {
+            font-family: 'Poiret One', cursive;
+            text-align: center;
+            margin:0;
+        }
+        h4 {
+            border-top: 1px solid black;
+            padding-top: 1%;
+        }
+        button, .btn, .btn-primary, .btn-sm {
+            background-color: white;
+            border-color: black;
+            color: black;
+            font-family: 'Poiret One', cursive;
+        }
+        .btn-primary:hover {
+            background-color: #FFD023;
+            border-color: black;
+        }
+        a {
+            font-family: 'Poiret One', cursive;
+            color: #ECEFF1;
+            margin: 2%;
+        }
+
+        .intro {
+            background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
+            margin-top: 2%;
+        }
+            /* TABLE */
+        #table {
+            display: none;
+        }
+        table {
+        width: 100%;
+        margin-top: 4%;
+        }
+        th, td {
+            padding: 1%;
+            background: white;
+            border: 1px solid black;
+            font-family: 'Poiret One', cursive;
+            margin: 2%;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+        }
+        /* GRAPH */
+        .legend {
+            text-align: center;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+        .group1 {
+            color: #FF9800;
+            padding: 1%;
+            margin: 0;
+        }
+        .group2 {
+            color: #FDD835;
+            padding: 1%;
+            margin: 0;
+        }
+        .group3 {
+            color: #696969;
+            padding: 1%;
+            margin: 0;
+        }
+        #graph {
+            margin: 2%;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: 'Poiret One', cursive;
+            width: 100%;
+        }
+        svg {
+            align-self: center;
+        }
+        /* display buttons */
+        .switch-display {
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 1%;
+            width: 100%;
+        }
+        #view-table, #view-graph {
+            margin: 0.2%
+        }
+
+    </style>
+
+    <!-- referenced https://www.d3-graph-gallery.com/intro_d3js.html for breakdown of functionality -->
+    <script defer>
+        // set the dimensions and margins of the graph
+        const margin = {top: 10, right: 30, bottom: 40, left: 50},
+            width = 600 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        const Svg = d3.select("#graph")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")")
+
+        // Create data
+        // referenced https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+        const data = <%- JSON.stringify(wellnessData) %>
+        const connected = data.map(d => {
+            return {date: new Date(d.date), value: d.connectedWithSomeone + .2 * Math.random() - .1, label: "connected"} // consulted someone with experience on formatting of return (specifically, including the label)
+        })
+        const shared = data.map(d => {
+            return {date: new Date(d.date), value: d.sharedFeelings + .2 * Math.random() - .1, label: "shared"}
+        })
+        const time = data.map(d => {
+            return {date: new Date(d.date), value: d.madeTimeForMyself + .2 * Math.random() - .1, label: "time"}
+        })
+
+        const allData = connected.concat(shared, time)
+        console.log(allData)
+        
+
+        // Add X axis
+        // referenced https://stackoverflow.com/questions/48267195/d3-axis-with-dates for x axis domain and https://observablehq.com/@d3/d3-extent to understand .extent
+        // referenced https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript to ensure once tick per date on x axis
+        const minMax = d3.extent(allData, function(d) {
+            return new Date(d.date)
+        })
+        const minMaxDifference = minMax[1] - minMax[0]
+        const rangeMin = minMax[0] - (1000 * 60 * 60 * 24)
+        const rangeMax = Number(minMax[1]) + (1000 * 60 * 60 * 24)
+        console.log(rangeMax)
+        const minMaxDays = Math.ceil(minMaxDifference / (1000 * 60 * 60 * 24))
+        const x = d3.scaleTime()
+            .domain([rangeMin, rangeMax])
+            .range([0, width])
+        Svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%m/%d")).ticks(Math.min(Math.max(3,minMaxDays + 1), 10)))
+            
+
+
+        // Add Y axis
+        const y = d3.scaleLinear()
+            .domain([0, 5])
+            .range([height, 0])
+        Svg.append("g")
+            .call(d3.axisLeft(y).ticks(6))
+
+        // Customization
+        Svg.selectAll(".tick line").attr("stroke", "#EBEBEB")
+
+        // Add X axis label:
+        Svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("x", width)
+            .attr("y", height + margin.top + 20)
+            .text("Date");
+
+        // Y axis label:
+        Svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left+20)
+            .attr("x", -margin.top)
+            .text("Wellness Rating")
+        const color = d3.scaleOrdinal() 
+                    .domain(["connected", "shared", "time" ])
+                    .range([ "#FF9800", "#FDD835", "#696969"])
+        // referenced https://www.d3-graph-gallery.com/graph/connectedscatter_basic.html and https://www.d3-graph-gallery.com/graph/connectedscatter_multi.html and https://stackoverflow.com/questions/17407100/how-do-you-draw-linear-line-in-scatter-plot-with-d3-js/39881432 and https://bl.ocks.org/d3noob/38744a17f9c0141bcd04 and more when working on drawing a path. No success with those alone
+
+        // Below code was written by someone w experience coding. As they were coding, I asked questions to understand what they were doing. I wrote those summaries in my own words commented out
+
+        // start of code written by someone else 
+        const colorMap = [["connected", "#FF9800"],["shared","#FDD835"],["time","#696969"]] // array[] used to map label and color 
+        // Color scale: give me a specie name, I return a color
+
+        colorMap.map(([type, color]) => { 
+            const filteredData = _.sortBy(allData, 'date').filter(({label}) => label === type) // this calls lodash to sort the array by date so that the line is drawn sequentially
+            const path = d3.path() // defines the d3 element "line" as a path
+            // first command in path has to be moveTo
+            const {date, value} = _.head(filteredData) // uses lodash method to pull out the first date and value which will be used to tell the line where to begin
+            path.moveTo(x(date), y(value)) // moveTo tells the line where to begin
+
+            // from there we draw a bunch of lines using lineTo
+            _.tail(filteredData).forEach(({date, value}) => { // loops through each coordinate
+                path.lineTo(x(date), y(value)) // draws a line to each coordinate
+            })
+
+            // this appends the path element
+            Svg.append("path")
+               .attr("d", path.toString())
+               .attr("stroke", color)
+               .attr("fill-opacity", "0") // turns shapes into outlines 
+               .attr("stroke-width", 2)
+        })
+        // end of code written by someone else 
+
+        // Add dots
+        Svg.append('g')
+            .selectAll("dot")
+            .data(allData)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(d.date); } )
+            .attr("cy", function (d) { return y(d.value); } )
+            .attr("r", 5)
+            .style("fill", function (d) { return color(d.label) } )
+        
+    // ===== CODE TO SWITCH DISPLAY ===== //
+    const table = document.getElementById("view-table")
+    const graph = document.getElementById("view-graph")
+    const tableDisplay = document.getElementById("table")
+    const graphDisplay = document.getElementById("graph")
+
+    const tableListener = () => {
+
+        tableDisplay.style.display = "flex"
+        graphDisplay.style.display = "none"
+    }
+
+    const graphListener = () => {
+        graphDisplay.style.display = "flex"
+        tableDisplay.style.display = "none"
+    }
+
+    table.addEventListener("click", tableListener)
+    graph.addEventListener("click", graphListener)
+
+        
+ 
+    </script>

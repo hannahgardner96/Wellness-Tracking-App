@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Wellness Account</title>
+
+    <!-- BOOTSTRAP IMPORT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- FONT IMPORTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Antic&family=Julius+Sans+One&family=Poiret+One&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <h1>Create Your Wellness Account</h1>
+    <form action = "/createaccount" method = "post">
+        <input type = "text" name = "username" id = "username" placeholder="Username" /> 
+        <input type = "password" name = "password" id = "password" placeholder="Password" /> 
+        <input class="btn btn-primary btn-sm" type = "submit" value = "CREATE ACCOUNT">
+    </form>
+    <a href = "/login"><button class = "btn btn-primary btn-sm">BACK TO LOGIN</button></a>
+</body>
+<img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
+</html>
+<style>
+    body {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        font-family: 'Poiret One', cursive;
+        margin: 2%;
+    }
+    h1 {
+        margin: 2%;
+        text-align: center;
+    }
+    form {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .btn-primary, input {
+        margin: 2%;
+        text-align: center;
+        width: 100%;
+    }
+    img {
+        width: 100%;
+    }
+</style>
