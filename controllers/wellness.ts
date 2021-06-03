@@ -105,13 +105,26 @@ router.get("/wellness", protectLogin, (req, res) => { // protectLogin is middlew
             const physicalLogObjects = wellnessData.physicalWellness.map(log => {
                 return PhysicalWellness.findById(log).exec()
             })
+            const nutritionalLogObjects = wellnessData.nutritionalWellness.map(log => {
+                return NutritionalWellness.findById(log).exec()
+            })
+            const socialLogObjects = wellnessData.socialWellness.map(log => {
+                return SocialWellness.findById(log).exec()
+            })
             Promise.all(emotionalLogObjects).then((emotionalObjects) => { // promise.all() takes iterable promises as an input and resolves them as a single promise in the form of an array
                 Promise.all(physicalLogObjects).then((physicalObjects) => {
-                    console.log(emotionalObjects, physicalObjects)
-                    res.render("home.ejs", {
-                        physicalData: physicalObjects,
-                        emotionalData: emotionalObjects
-                        // objects is the resolved promise as specified in the .then() parameter
+                    Promise.all(nutritionalLogObjects).then((nutritionalObjects) => {
+                        Promise.all(socialLogObjects).then((socialObjects) => {
+                            // console.log(`physical data is: ${physicalObjects}. emotional data is: ${emotionalObjects}. nutritional data is: ${nutritionalObjects}. social data is: ${socialObjects} `)
+                            res.render("home.ejs", {
+                                physicalData: physicalObjects,
+                                emotionalData: emotionalObjects,
+                                nutritionalData: nutritionalObjects,
+                                socialData: socialObjects,
+                                username: req.session.user.username
+                                // objects is the resolved promise as specified in the .then() parameter
+                            })
+                         })
                     })
                 })
             })
@@ -330,9 +343,11 @@ router.put("/wellness/emotionaltrend/:id", protectLogin, (req, res) => {
 // edit physical wellness log
 router.get("/wellness/physicaltrend/:id/edit", protectLogin, (req, res) => {
     PhysicalWellness.findById(req.params.id, null, null, (error, data) => {
+        
         if (error) {
             res.send(error)
         } else {
+            console.log("DATA IS ", data)
             res.render("edit-physical-log.ejs", {
                 data: data
             })

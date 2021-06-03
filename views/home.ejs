@@ -54,16 +54,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Wellness Component</td>
-                            <td>Wellness Component</td>
+                            <td id = "strength"></td>
+                            <td id = "improvement"></td>
                         </tr>
                         <tr>
-                            <td><button class="btn btn-primary btn-sm"><a class = "table-button" href = "#">See Trend</a></button></td>
-                            <td><button class="btn btn-primary btn-sm"><a class = "table-button" href = "#">See Trend</a></button></td>
+                            <td><button class="btn btn-primary btn-sm"><a class = "table-button" id = "strength-button" href = "#">See Trend</a></button></td>
+                            <td><button class="btn btn-primary btn-sm"><a class = "table-button" id = "improvement-button" href = "#">See Trend</a></button></td>
                         </tr>
                     </tbody>
                 </table>
-                <h6 class = "tip">Tip of the Day: List 5 things you are grateful for.</h6>
+                <h6 class = "tip" id = "tip-rand">Tip of the Day: List 5 things you are grateful for.</h6>
             </div>
         </div>
     </div>
@@ -209,7 +209,7 @@
     })
 
     const allData = mindfulness.concat(gratitude, goals)
-    console.log(allData)
+    // console.log(allData)
     
 
     // Add X axis
@@ -221,7 +221,7 @@
     const minMaxDifference = minMax[1] - minMax[0]
     const rangeMin = minMax[0] - (1000 * 60 * 60 * 24)
     const rangeMax = Number(minMax[1]) + (1000 * 60 * 60 * 24)
-    console.log(rangeMax)
+    // console.log(rangeMax)
     const minMaxDays = Math.ceil(minMaxDifference / (1000 * 60 * 60 * 24))
     const x = d3.scaleTime()
         .domain([rangeMin, rangeMax])
@@ -330,7 +330,7 @@
     })
 
     const allData2 = moved.concat(sleep, rest)
-    console.log(allData2)
+    // console.log(allData2)
     
 
     // Add X axis
@@ -342,7 +342,7 @@
     const minMaxDifference2 = minMax2[1] - minMax2[0]
     const rangeMin2 = minMax2[0] - (1000 * 60 * 60 * 24)
     const rangeMax2 = Number(minMax2[1]) + (1000 * 60 * 60 * 24)
-    console.log(rangeMax)
+    // console.log(rangeMax)
     const minMaxDays2 = Math.ceil(minMaxDifference2 / (1000 * 60 * 60 * 24))
     const x2 = d3.scaleTime()
         .domain([rangeMin2, rangeMax2])
@@ -419,5 +419,105 @@
         .attr("cy", function (d) { return y2(d.value); } )
         .attr("r", 5)
         .style("fill", function (d) { return color(d.label) } )
+</script>
+
+<!-- HIGHLIGHTS JS -->
+<script>
+    // === DISPLAY AREA OF STRENGTH AND IMPROVEMENT === //
+    const emotionalData = <%- JSON.stringify(emotionalData) %>
+    const physicalData = <%- JSON.stringify(physicalData) %>
+    const nutritionalData = <%- JSON.stringify(nutritionalData) %>
+    const socialData = <%- JSON.stringify(socialData) %>
+    const username = <%- JSON.stringify(username) %>
+
+    const emotionalAvg = () => { 
+        let avg = 0
+        emotionalData.forEach(log => {
+            avg = avg + log.practicedMindfulness + log.practicedGratitude + log.reflectedOnGoals
+        })
+        avg = avg / (emotionalData.length * 3)
+        return avg
+    }
+
+    const physicalAvg = () => { 
+        let avg = 0
+        physicalData.forEach(log => {
+            avg = avg + log.movedBody + log.gotEnoughSleep + log.restedBody
+        })
+        avg = avg / (physicalData.length * 3)
+        return avg
+    }
+
+    const nutritionalAvg = () => { 
+        let avg = 0
+        nutritionalData.forEach(log => {
+            avg = avg + log.listenedToBody + log.ateVeggies + log.drankWater
+        })
+        avg = avg / (nutritionalData.length * 3)
+        return avg
+    }
+
+    const socialAvg = () => { 
+        let avg = 0
+        socialData.forEach(log => {
+            avg = avg + log.connectedWithSomeone + log.sharedFeelings + log.madeTimeForMyself
+        })
+        avg = avg / (socialData.length * 3)
+        return avg
+    }
+
+    const averages = [emotionalAvg(), physicalAvg(), nutritionalAvg(), socialAvg()]
+
+    const appendMax = () => {
+        let indexOfMax = averages.indexOf(Math.max(...averages))
+        let cell = document.getElementById("strength")
+        let link = document.getElementById("strength-button")
+        if (indexOfMax === 0) {
+            cell.innerText = "Emotional Wellness"
+            link.href = "/wellness/emotionaltrend"
+        } else if (indexOfMax === 1) {
+            cell.innerText = "Physical Wellness"
+            link.href = "/wellness/physicaltrend"
+        } else if (indexOfMax === 2) {
+            cell.innerText = "Nutritional Wellness"
+            link.href = "/wellness/nutritionaltrend"
+        } else {
+            cell.innerText = "Social Wellness"
+            link.href = "/wellness/socialtrend"
+        }
+    }
+
+    const appendMin = () => {
+        let indexOfMin = averages.indexOf(Math.min(...averages))
+        let cell = document.getElementById("improvement")
+        let link = document.getElementById("improvement-button")
+        if (indexOfMin === 0) {
+            cell.innerText = "Emotional Wellness"
+            link.href = "/wellness/emotionaltrend"
+        } else if (indexOfMin === 1) {
+            cell.innerText = "Physical Wellness"
+            link.href = "/wellness/physicaltrend"
+        } else if (indexOfMin === 2) {
+            cell.innerText = "Nutritional Wellness"
+            link.href = "/wellness/nutritionaltrend"
+        } else {
+            cell.innerText = "Social Wellness"
+            link.href = "/wellness/socialtrend"
+        }
+    }
+
+    appendMin()
+    appendMax()
+
+    // === DISPLAY RANDOM TIP === //
+    // referenced https://www.everydayhealth.com/emotional-health/10-ways-to-boost-emotional-health.aspx and https://www.rivermendhealth.com/resources/10-tips-for-emotional-well-being-heart-health/ for tips
+    const tipBox = document.getElementById("tip-rand")
+
+    let tips = ["List 5 things you are grateful for.", "Get Moving to Improve Mood and Lessen Anxiety.", "Develop a Passion by Investing Time in a New Hobby.", "Meditate or Practice Yoga to Relieve Stress.", "Manage Your Time by Setting Weekly Goals.", "Say 'no' when you need to. Only take on as much as you can handle.", "List 5 things you love about yourself.", "When you feel angry, take time and space for yourself. Then, confront your anger.", "Eat lots of leafy greens.", "Lean on friends and family for support."]
+    const setTip = () => {
+        tipBox.innerText = `Tip of the Day: ${tips[Math.floor(Math.random()*tips.length)]}`
+    }
+    
+    setTip()
 
 </script>

@@ -97,13 +97,26 @@ exports.router.get("/wellness", protectLogin, (req, res) => {
             const physicalLogObjects = wellnessData.physicalWellness.map(log => {
                 return physical_wellness_1.PhysicalWellness.findById(log).exec();
             });
+            const nutritionalLogObjects = wellnessData.nutritionalWellness.map(log => {
+                return nutritional_wellness_1.NutritionalWellness.findById(log).exec();
+            });
+            const socialLogObjects = wellnessData.socialWellness.map(log => {
+                return social_wellness_1.SocialWellness.findById(log).exec();
+            });
             Promise.all(emotionalLogObjects).then((emotionalObjects) => {
                 Promise.all(physicalLogObjects).then((physicalObjects) => {
-                    console.log(emotionalObjects, physicalObjects);
-                    res.render("home.ejs", {
-                        physicalData: physicalObjects,
-                        emotionalData: emotionalObjects
-                        // objects is the resolved promise as specified in the .then() parameter
+                    Promise.all(nutritionalLogObjects).then((nutritionalObjects) => {
+                        Promise.all(socialLogObjects).then((socialObjects) => {
+                            // console.log(`physical data is: ${physicalObjects}. emotional data is: ${emotionalObjects}. nutritional data is: ${nutritionalObjects}. social data is: ${socialObjects} `)
+                            res.render("home.ejs", {
+                                physicalData: physicalObjects,
+                                emotionalData: emotionalObjects,
+                                nutritionalData: nutritionalObjects,
+                                socialData: socialObjects,
+                                username: req.session.user.username
+                                // objects is the resolved promise as specified in the .then() parameter
+                            });
+                        });
                     });
                 });
             });
@@ -322,6 +335,7 @@ exports.router.get("/wellness/physicaltrend/:id/edit", protectLogin, (req, res) 
             res.send(error);
         }
         else {
+            console.log("DATA IS ", data);
             res.render("edit-physical-log.ejs", {
                 data: data
             });
