@@ -201,8 +201,8 @@
     <script defer>
         // set the dimensions and margins of the graph
         const margin = {top: 10, right: 30, bottom: 40, left: 50},
-            width = 600 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            width = 500 - margin.left - margin.right,
+            height = 300 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         const Svg = d3.select("#graph")
@@ -287,22 +287,24 @@
 
         colorMap.map(([type, color]) => { 
             const filteredData = _.sortBy(allData, 'date').filter(({label}) => label === type) // this calls lodash to sort the array by date so that the line is drawn sequentially
-            const path = d3.path() // defines the d3 element "line" as a path
-            // first command in path has to be moveTo
-            const {date, value} = _.head(filteredData) // uses lodash method to pull out the first date and value which will be used to tell the line where to begin
-            path.moveTo(x(date), y(value)) // moveTo tells the line where to begin
+            if (filteredData.length > 0) {
+                const path = d3.path() // defines the d3 element "line" as a path
+                // first command in path has to be moveTo
+                const {date, value} = _.head(filteredData) // uses lodash method to pull out the first date and value which will be used to tell the line where to begin
+                path.moveTo(x(date), y(value)) // moveTo tells the line where to begin
 
-            // from there we draw a bunch of lines using lineTo
-            _.tail(filteredData).forEach(({date, value}) => { // loops through each coordinate
-                path.lineTo(x(date), y(value)) // draws a line to each coordinate
-            })
+                // from there we draw a bunch of lines using lineTo
+                _.tail(filteredData).forEach(({date, value}) => { // loops through each coordinate
+                    path.lineTo(x(date), y(value)) // draws a line to each coordinate
+                })
 
-            // this appends the path element
-            Svg.append("path")
-               .attr("d", path.toString())
-               .attr("stroke", color)
-               .attr("fill-opacity", "0") // turns shapes into outlines 
-               .attr("stroke-width", 2)
+                // this appends the path element
+                Svg.append("path")
+                .attr("d", path.toString())
+                .attr("stroke", color)
+                .attr("fill-opacity", "0") // turns shapes into outlines 
+                .attr("stroke-width", 2)
+            }
         })
         // end of code written by someone else 
 
