@@ -22,7 +22,8 @@ This required a review of both asynchronous JavaScript and d3. Links to the arti
 <br>
 
 ### Notable Challenges <br>
-
+I structured my data with referenced mongoose models. It was a challenge to learn how to pass data from my main model to sub models. I found that, to pass data from referenced models to a given route, I needed a promise structure. I first accessed the main mongoose model and then created a promise to map over the main model and find the referenced models matching a given ID. The promise was in the async structure of the .exec() method and it was resolved using Promise.all() as shown below. 
+<img src = "access-data-ex.png"/>
 
 <br>
 
