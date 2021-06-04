@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Resource</title>
+
+    <!-- BOOTSTRAP IMPORT -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- FONT IMPORTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Antic&family=Julius+Sans+One&family=Poiret+One&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class = "container">
+        <%- include ("./partials/account-options.ejs") %>
+        <h1>Upload Video</h1>
+        <h5>Enter video information below.</h5>
+        <form  class = "form-input" action = "/resource/<%= resource.id %>/?_method=put" method = "post">
+            <input type = "text" name = "title" id = "title" placeholder = "Title" value = "<%= resource.title %>" /><br/>
+            <input type = "text" name = "src" id = "src" placeholder = "Resource Link" value = "<%= resource.src %>" /><br/>
+            <input type = "text" name = "description" id = "description" placeholder = "Description" value = "<%= resource.description %>" /><br/>
+            <input class="btn btn-primary btn-sm" type = "submit" value = "Update Resource">
+        </form>
+    </div>
+</body>
+<img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
+</html>
+
+<style>
+    html {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+        flex-direction: column;
+        margin: 0;
+    }
+    .container {
+        font-family: 'Poiret One', cursive;
+        padding: 5%;
+        display: inline-flex;
+        justify-content:center;
+        flex-direction: column;
+        align-self: center;
+    }
+    a {
+        color: black;
+    }
+    h1 {
+        background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
+    }
+    h1, h5, form {
+        padding: 2%;
+        margin: 1%;
+        background-color: white;
+        color: black;
+    }
+    nav {
+        margin: 1%;
+        padding: 2%;
+        background-color: white;
+    }
+    button, .btn, .btn-primary, .btn-sm {
+        background-color: white;
+        border-color: black;
+        color: black;
+        align-self: center;
+    }
+    .btn-primary:hover {
+        background-color: #FFD023;
+        border-color: black;
+    }
+    h1, h5 {
+        text-align: center;
+    }
+    .form-input {
+        align-self: center;
+        display: inline-flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    input {
+        align-self: center;
+    }
+    img {
+        width: 100%;
+    }
+</style>

@@ -490,7 +490,7 @@ router.delete("/deleteaccount", protectLogin, (req, res) => {
 
 // wellness resources section
 //index
-router.get("/resources", (req, res) => {
+router.get("/resources", protectLogin, (req, res) => {
     Resource.find({}, (error, resource) => {
         if (error) {
             res.send(error)
@@ -502,11 +502,11 @@ router.get("/resources", (req, res) => {
     })
 })
 // new
-router.get("/resource/new", (req, res) => {
+router.get("/resource/new", protectLogin, (req, res) => {
     res.render("new-resource.ejs")
 })
 // create
-router.post("/resource/new", (req, res) => {
+router.post("/resource/new", protectLogin, (req, res) => {
     Resource.create(req.body, (error, resource) => {
         if (error) {
             res.send(error)
@@ -516,7 +516,7 @@ router.post("/resource/new", (req, res) => {
     })
 })
 // show
-router.get("/resource/:id", (req, res) => {
+router.get("/resource/:id", protectLogin, (req, res) => {
     Resource.findById(req.params.id, (error, resource) => {
         if (error) {
             res.send(error)
@@ -530,29 +530,35 @@ router.get("/resource/:id", (req, res) => {
 })
 
 // edit
-router.get("/resource/:id/edit", (req, res) => {
-    Resource.findById(req.params.id, (error, resource) => {
+router.get("/resource/:id/edit", protectLogin, (req, res) => {
+    Resource.findById(req.params.id, null, null, (error, resource) => {
         if (error) {
             res.send(error)
         } else {
-            res.render("edit-resource")
+            res.render("edit-resource", {
+                resource: resource
+            })
         }
     })
 })
 
 // update
-router.put("/resource/:id/edit", (req, res) => {
+router.put("/resource/:id/edit", protectLogin, (req, res) => {
     Resource.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, video) => {
-        res.redirect(`/resource/${req.params.id}`)
+        if (error) {
+            res.send(error)
+        } else {
+            res.redirect(`/resource/${req.params.id}`)
+        }
     })
 })
 
 // delete 
-router.delete("/resource/:id", (req, res) => {
+router.delete("/resource/:id", protectLogin, (req, res) => {
     Resource.findByIdAndRemove(req.params.id, (error, deleted) => {
         if (error) {
             res.send(error)
-        } else {
+        } else  {
             res.redirect("/resources")
         }
     })

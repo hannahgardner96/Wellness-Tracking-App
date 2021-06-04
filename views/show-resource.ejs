@@ -22,7 +22,7 @@
         <%- include ("./partials/account-options.ejs") %>
         <div class = "intro">
             <h3>MY WELLNESS RESOURCES</h3>
-        <a href = "/resource/new"><button class="btn btn-primary btn-sm" id = "new-resource">NEW RESOURCE</button></a>
+        <a href = "/resource/new" id = "new-resource"><button class="btn btn-primary btn-sm">NEW RESOURCE</button></a>
         </div>
         <div class = "video-container">
             <h4><a href = "/resource/<%= resource.id %>"><%= resource.title.toUpperCase() %></a></h4>
@@ -37,29 +37,34 @@
             <form action = "/resource/<%= id %>?_method=delete" method = "post">
                 <input class="btn btn-outline-primary"type = "submit" value = "DELETE"/>
             </form>
-            <a href = "/resource/<%= id %>/edit"><button class="btn btn-outline-primary">EDIT</button></a>
+            <a href = "/resource/<%= resource.id %>/edit"><button class="btn btn-outline-primary">EDIT</button></a>
         </div>
         </div>
     </div>
 </body>
+<img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
 </html>
 <style>
     body {
         font-family: 'Poiret One', cursive;
-        padding: 5%;
+    }
+    .intro {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
     }
     a {
         color: black;
+    }
+    h3, p {
+        text-align: center;
     }
     h4 {
         padding: 2%;
         color: black;
         margin: 1%;
-    }
-    nav {
-        padding: 2%;
-        background-color: black;
-        margin: 1%;
+        text-align: center;
     }
     .btn-outline-primary {
         border-color: #FFD023;
@@ -72,22 +77,27 @@
     .video-container {
         background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
         background-color: white;
+        display: inline-flex;
+        justify-content: center;
+        flex-direction: column;
         color: black;
         margin: 1%;
         padding: 2%;
+        width: 100%;
     }
     .video-display {
         padding: 2%;
         width: 590px;
         height: 315px;
         border: 2px solid #FFD023;
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
-        justify-content:space-around;
+        justify-content:center;
         align-items: center;
-        margin: 2%;
+        margin: 0;
         background-color: white ;
         color: black;
+        align-self: center;
     }
     iframe {
         width: 560px;
@@ -104,5 +114,16 @@
     .btn-primary:hover {
         background-color: #FFD023;
         border-color: black;
+    }
+    img {
+        width: 100%;
+    }
+    #new-resource {
+        align-self: center;
+        justify-self: center;
+    }
+    a, form {
+        display: flex;
+        justify-content: center;
     }
 </style>

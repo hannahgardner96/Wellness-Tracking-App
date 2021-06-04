@@ -468,7 +468,7 @@ exports.router.delete("/deleteaccount", protectLogin, (req, res) => {
 });
 // wellness resources section
 //index
-exports.router.get("/resources", (req, res) => {
+exports.router.get("/resources", protectLogin, (req, res) => {
     resources_1.Resource.find({}, (error, resource) => {
         if (error) {
             res.send(error);
@@ -481,11 +481,11 @@ exports.router.get("/resources", (req, res) => {
     });
 });
 // new
-exports.router.get("/resource/new", (req, res) => {
+exports.router.get("/resource/new", protectLogin, (req, res) => {
     res.render("new-resource.ejs");
 });
 // create
-exports.router.post("/resource/new", (req, res) => {
+exports.router.post("/resource/new", protectLogin, (req, res) => {
     resources_1.Resource.create(req.body, (error, resource) => {
         if (error) {
             res.send(error);
@@ -496,7 +496,7 @@ exports.router.post("/resource/new", (req, res) => {
     });
 });
 // show
-exports.router.get("/resource/:id", (req, res) => {
+exports.router.get("/resource/:id", protectLogin, (req, res) => {
     resources_1.Resource.findById(req.params.id, (error, resource) => {
         if (error) {
             res.send(error);
@@ -510,24 +510,31 @@ exports.router.get("/resource/:id", (req, res) => {
     });
 });
 // edit
-exports.router.get("/resource/:id/edit", (req, res) => {
-    resources_1.Resource.findById(req.params.id, (error, resource) => {
+exports.router.get("/resource/:id/edit", protectLogin, (req, res) => {
+    resources_1.Resource.findById(req.params.id, null, null, (error, resource) => {
         if (error) {
             res.send(error);
         }
         else {
-            res.render("edit-resource");
+            res.render("edit-resource", {
+                resource: resource
+            });
         }
     });
 });
 // update
-exports.router.put("/resource/:id/edit", (req, res) => {
+exports.router.put("/resource/:id/edit", protectLogin, (req, res) => {
     resources_1.Resource.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, video) => {
-        res.redirect(`/resource/${req.params.id}`);
+        if (error) {
+            res.send(error);
+        }
+        else {
+            res.redirect(`/resource/${req.params.id}`);
+        }
     });
 });
 // delete 
-exports.router.delete("/resource/:id", (req, res) => {
+exports.router.delete("/resource/:id", protectLogin, (req, res) => {
     resources_1.Resource.findByIdAndRemove(req.params.id, (error, deleted) => {
         if (error) {
             res.send(error);
