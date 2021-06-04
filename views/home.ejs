@@ -25,7 +25,7 @@
 <body>
     <div class = "container">
         <%- include ("./partials/account-options.ejs") %>
-        <div class = "intro">
+        <div class = "intro" id = "top">
             <h3>WELLNESS TRACKER</h3>
             <h5 class = "begin-here">"THE ONLY PERSON YOU CAN COMPARE YOURSELF TO IS A PAST VERSION OF YOURSELF." -DAX SHEPHARD</h5>
             <h6 class = "instructions">Select an area of wellness.</h6>
@@ -69,6 +69,7 @@
                 <h6 class = "tip" id = "tip-rand">Tip of the Day: List 5 things you are grateful for.</h6>
             </div>
         </div>
+        <button class="btn btn-primary btn-sm" id = "to-top">BACK TO TOP</button>
     </div>
 </body>
 <img src = "https://static.vecteezy.com/system/resources/previews/002/030/935/large_2x/yellow-flowers-on-white-background-free-photo.jpg">
@@ -79,7 +80,7 @@
         background: white;
         scroll-behavior: smooth;
     }
-    body {
+    .container {
         background: white;
         color: #263238;
         display: flex;
@@ -121,7 +122,11 @@
         width: 30%;
         align-self: center;
     }
-    #scroll {
+    #to-top {
+
+        align-self: center;
+    }
+    #scroll  {
         padding: 2%;
         align-self: center;
         margin-top: 30%;
@@ -574,11 +579,17 @@
     // === SCROLL LISTENER === //
     const scrollButton = document.getElementById("scroll")
     const destination = document.getElementById("scroll-destination")
+    const toTopButton = document.getElementById("to-top")
+    const topDestination = document.getElementById("top")
 
     const scrollToOverview = () => {
         destination.scrollIntoView()
     }
+    const scrollToTop = () =>{
+        topDestination.scrollIntoView()
+    }
 
     scrollButton.addEventListener("click", scrollToOverview)
+    toTopButton.addEventListener("click", scrollToTop)
 
 </script>
