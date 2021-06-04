@@ -1,14 +1,15 @@
 # [Wellness Tracker](https://protected-river-42213.herokuapp.com/login)
-<img src="https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg" width="200" height="150">
+<img src="https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg" width="400" height="150">
 
 ## Overview of Project 2 <br>
-Project 2 Goal: a working full-stack application using Node,js, Mongoose, Express, and EJS that adhered to the MVC file structure.
+Project 2 Goal: working full-stack application using Node.js, Mongoose, Express, and EJS that adheres to the MVC file structure.
+***
 <br><br>
-Interested in becoming more aware of you self-care and wellness habbits? Look no further! The Wellness Tracker is here to support. 
+Are you interested in becoming more aware of your self-care and wellness habbits? Look no further! The Wellness Tracker is here to support. 
 <br><br>
-I began with a mongoose model for a user that referenced four mongoose models corresponding with emotional, physical, nutritional, and social wellness. By taking user ratings of three categories within each wellness category, a graph is populated with data from each category to display wellness trends. On the homepage, the user can click to scroll to their overview which highlights the category with the highest and lowest average as well as provides a wellness tip of the day. 
+I began with a mongoose model for a user that referenced four mongoose models corresponding with emotional, physical, nutritional, and social wellness. By taking user ratings of three categories within four wellness categories, a graph is populated with data from each category to display wellness trends. On the homepage, the user can click to scroll to the overview which highlights the categories with the highest and lowest averages as well as provides a wellness tip of the day. 
 <br><br>
-If you direct your attention to the top of the page you will see a button labeled "resources". Clicking this button will take you to an index of wellness resources. These resources, curated by the user, link to a page on which you can view the content of the individual resources, edit, and delete the resources.
+If you direct your attention to the top of the page you will see a button labeled "resources". Clicking this button will take you to an index of wellness resources. These resources, curated by the user, link to a page on which you can view the content, edit, and delete each resource.
 
 <br>
 
