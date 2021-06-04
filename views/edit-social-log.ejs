@@ -29,11 +29,11 @@
             <input type = "date" name = "date" id = "date" value = '<%= data.date.toISOString().slice(0,10) %>'/>
             <h4>Rate the accuracy statements below on a scale of 1 to 5.</h4>
             <label for = "connectedWithSomeone">I connected with someone.</label>
-            <input type = "text" name = "connectedWithSomeone" id = "connectedWithSomeone" placeholder = "1 - 5"  value = "<%= data.connectedWithSomeone %>"/>
+            <input type = "number" name = "connectedWithSomeone" id = "connectedWithSomeone" placeholder = "1 - 5"  value = "<%= data.connectedWithSomeone %>" min = "1" max = "5" />
             <label for = "sharedFeelings">I shared my feelings with someone or in a journal.</label>
-            <input type = "text" name = "sharedFeelings" id = "sharedFeelings" placeholder = "1 - 5"  value = "<%= data.sharedFeelings %>"/>
+            <input type = "number" name = "sharedFeelings" id = "sharedFeelings" placeholder = "1 - 5"  value = "<%= data.sharedFeelings %>" min = "1" max = "5" />
             <label for = "madeTimeForMyself">I made time for myself.</label>
-            <input type = "text" name = "madeTimeForMyself" id = "madeTimeForMyself" placeholder = "1 - 5"  value = "<%= data.madeTimeForMyself %>"/>
+            <input type = "number" name = "madeTimeForMyself" id = "madeTimeForMyself" placeholder = "1 - 5"  value = "<%= data.madeTimeForMyself %>" min = "1" max = "5" />
             <input class="btn btn-primary btn-sm" type = "submit" value = "Update Log">
         </form>
     </div>
