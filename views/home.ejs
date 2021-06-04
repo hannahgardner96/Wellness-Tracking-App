@@ -28,18 +28,13 @@
         <div class = "intro">
             <h3>WELLNESS TRACKER</h3>
             <h5 class = "begin-here">"THE ONLY PERSON YOU CAN COMPARE YOURSELF TO IS A PAST VERSION OF YOURSELF." -DAX SHEPHARD</h5>
-            <h5 class = "begin-here">
-                Select an area of wellness.
-                <br/><br/>
-                Click "NEW LOG" to track.
-                <br/><br/>
-                See trends on wellness page or scroll for overview.</h5>
+            <h6 class = "instructions">Select an area of wellness.</h6>
             <%- include ("./partials/full-nav.ejs") %>
-            <h5 class = "begin-here" id = "scroll">SCROLL TO SEE OVERVIEW</h5>
+                <button class="btn btn-primary btn-sm" id = "scroll">SCROLL TO OVERVIEW</button>
         </div>
         <div class = "overview-highlights">
 <!-- OVERVIEW -->
-            <div class = "overview">
+            <div class = "overview" id = "scroll-destination">
                 <h4>OVERVIEW</h4>
                 <div class = "inner-overview" >
                     <div class = "graph-overview" id = "emotional-graph">
@@ -82,6 +77,7 @@
     /* GENERAL */
     html {
         background: white;
+        scroll-behavior: smooth;
     }
     body {
         background: white;
@@ -101,17 +97,35 @@
     }
     .intro {
         background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
-        padding-bottom: 20%;
+        padding-bottom: 10%;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        padding:3%;
     }
     .begin-here {
-        padding: 5%;
-        margin: 5%;
+        padding: 2%;
+        margin: 2%;
         background-color: rgb(255, 255, 255, 0.7);
         text-align: center;
         line-height: 150%;
+        margin-bottom: 2%;
+        font-size:x-large;
+    }
+    .instructions {
+        font-family: 'Poiret One', cursive;
+        padding: 0;
+        text-align: center;
+        background-color: rgb(255, 255, 255, 0.7);
+        width: 30%;
+        align-self: center;
     }
     #scroll {
         padding: 2%;
+        align-self: center;
+        margin-top: 20%;
+        margin-bottom: 2%;
     }
     /* OVERVIEW */
     .overview-highlights {
@@ -556,5 +570,15 @@
     }
     
     setTip()
+
+    // === SCROLL LISTENER === //
+    const scrollButton = document.getElementById("scroll")
+    const destination = document.getElementById("scroll-destination")
+
+    const scrollToOverview = () => {
+        destination.scrollIntoView()
+    }
+
+    scrollButton.addEventListener("click", scrollToOverview)
 
 </script>
