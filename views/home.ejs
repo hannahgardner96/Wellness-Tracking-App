@@ -27,7 +27,9 @@
         <%- include ("./partials/account-options.ejs") %>
         <div class = "intro">
             <h3>WELLNESS TRACKER</h3>
+            <h6 class = "begin-here">Begin by "logging" how you feel. Have you been killing it and taking care of your emotional wellness? Wonderful—"LOG EMOTIONAL". Have you been struggling with your social wellness? That's okay—"LOG SOCIAL".<br/><br/>Once you have entered data for all the categories (emotional, physical, nutritional, and social) you will be able to track your trends. Check out "EMOTIONAL TREND".</h6>
             <%- include ("./partials/full-nav.ejs") %>
+            <h6 class = "begin-here" id = "scroll">SCROLL TO SEE OVERVIEW</h6>
         </div>
         <div class = "overview-highlights">
 <!-- OVERVIEW -->
@@ -93,6 +95,17 @@
     }
     .intro {
         background-image: url("https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg");
+        padding-bottom: 20%;
+    }
+    .begin-here {
+        padding: 5%;
+        margin: 5%;
+        background-color: rgb(255, 255, 255, 0.7);
+        text-align: center;
+        line-height: 150%;
+    }
+    #scroll {
+        padding: 2%;
     }
     /* OVERVIEW */
     .overview-highlights {

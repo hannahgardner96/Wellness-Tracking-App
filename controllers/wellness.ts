@@ -2,6 +2,8 @@
 // change input from text to drop down on 
 // responsiveness on phone
 // busy home page, ore description needed
+// alert if value outside of acceptable range entered in number
+// fix time zone issue with graphs and tables
 
 // ===== DEPENDENCIES ===== //
 // consulted someone with experience for TS formatting
