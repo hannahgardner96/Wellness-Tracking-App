@@ -537,7 +537,7 @@ router.get("/resource/:id/edit", protectLogin, (req, res) => {
         if (error) {
             res.send(error)
         } else {
-            res.render("edit-resource", {
+            res.render("edit-resource.ejs", {
                 resource: resource
             })
         }
@@ -545,7 +545,7 @@ router.get("/resource/:id/edit", protectLogin, (req, res) => {
 })
 
 // update
-router.put("/resource/:id/edit", protectLogin, (req, res) => {
+router.put("/resource/:id", protectLogin, (req, res) => {
     Resource.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, video) => {
         if (error) {
             res.send(error)

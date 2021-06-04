@@ -518,14 +518,14 @@ exports.router.get("/resource/:id/edit", protectLogin, (req, res) => {
             res.send(error);
         }
         else {
-            res.render("edit-resource", {
+            res.render("edit-resource.ejs", {
                 resource: resource
             });
         }
     });
 });
 // update
-exports.router.put("/resource/:id/edit", protectLogin, (req, res) => {
+exports.router.put("/resource/:id", protectLogin, (req, res) => {
     resources_1.Resource.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, video) => {
         if (error) {
             res.send(error);
