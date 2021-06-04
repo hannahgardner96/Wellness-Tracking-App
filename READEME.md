@@ -1,10 +1,11 @@
 # [Wellness Tracker](https://protected-river-42213.herokuapp.com/login)
-<img src="https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg" width="400" height="150">
+<img src="https://www.homestratosphere.com/wp-content/uploads/2018/04/chrysanthemum.jpg" width="400" height="200">
 
 ## Overview of Project 2 <br>
 Project 2 Goal: working full-stack application using Node.js, Mongoose, Express, and EJS that adheres to the MVC file structure.
+<br>
 ***
-<br><br>
+<br>
 Are you interested in becoming more aware of your self-care and wellness habbits? Look no further! The Wellness Tracker is here to support. 
 <br><br>
 I began with a mongoose model for a user that referenced four mongoose models corresponding with emotional, physical, nutritional, and social wellness. By taking user ratings of three categories within four wellness categories, a graph is populated with data from each category to display wellness trends. On the homepage, the user can click to scroll to the overview which highlights the categories with the highest and lowest averages as well as provides a wellness tip of the day. 
